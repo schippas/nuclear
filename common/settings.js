@@ -86,6 +86,13 @@ export default [
     default: false
   },
   {
+    name: 'miniPlayer',
+    category: 'display',
+    type: settingType.BOOLEAN,
+    prettyName: 'mini-player',
+    default: true
+  },
+  {
     name: 'trackDuration',
     category: 'display',
     type: settingType.BOOLEAN,

@@ -57,6 +57,8 @@ import TrackInfo from './components/TrackInfo';
 import WindowControls from './components/WindowControls';
 import VolumeControls from './components/VolumeControls';
 
+import MiniPlayerButton from './components/MiniPlayerButton';
+
 @withTranslation('app')
 class App extends React.Component {
   constructor(props) {
@@ -102,15 +104,26 @@ class App extends React.Component {
   }
 
   renderNavBar () {
-    return (
-      <Navbar>
-        <NavButtons/>
-        <SearchBoxContainer />
-        <Spacer className={styles.navbar_spacer}/>
-        <HelpModal />
-        {this.props.settings.framelessWindow && <WindowControls />}
-      </Navbar>
-    );
+    if(this.props.settings.miniPlayer == false){
+        return (
+          <Navbar>
+            <NavButtons/>
+            <SearchBoxContainer />
+            <Spacer className={styles.navbar_spacer}/>
+            <MiniPlayerButton />
+            <HelpModal />
+            {this.props.settings.framelessWindow && <WindowControls />}
+          </Navbar>
+        );
+    }else{
+        return (
+          <Navbar>            
+            <Spacer className={styles.navbar_spacer}/>
+            <MiniPlayerButton />
+            {this.props.settings.framelessWindow && <WindowControls />}
+          </Navbar>
+        );
+    }
   }
 
   renderRightPanel () {
@@ -341,27 +354,46 @@ class App extends React.Component {
   }
 
   render () {
-    return (
-      <React.Fragment>
-        <ErrorBoundary>
-          <div className={styles.app_container}>
-            {this.renderNavBar()}
-            <div className={styles.panel_container}>
-              {this.renderSidebarMenu()}
-              <VerticalPanel className={styles.center_panel}>
-                <MainContentContainer />
-              </VerticalPanel>
-              {this.renderRightPanel()}
-            </div>
-            {this.renderFooter()}
-            <SoundContainer />
-            <IpcContainer />
-          </div>
-        </ErrorBoundary>
-        <ShortcutsContainer />
-        <ToastContainer />
-      </React.Fragment>
-    );
+    if(this.props.settings.miniPlayer == false){
+	window.resizeTo(window.screen.availWidth, window.screen.availHeight);
+        return (
+          <React.Fragment>
+            <ErrorBoundary>
+              <div className={styles.app_container}>
+                {this.renderNavBar()}
+                <div className={styles.panel_container}>
+                  {this.renderSidebarMenu()}
+                  <VerticalPanel className={styles.center_panel}>
+                    <MainContentContainer />
+                  </VerticalPanel>
+                  {this.renderRightPanel()}
+                </div>
+                {this.renderFooter()}
+                <SoundContainer />
+                <IpcContainer />
+              </div>
+            </ErrorBoundary>
+            <ShortcutsContainer />
+            <ToastContainer />
+          </React.Fragment>
+        );
+    }else{
+	window.resizeTo(900,140);
+        return (
+          <React.Fragment>
+            <ErrorBoundary>
+              <div className={styles.app_container}>
+                {this.renderNavBar()}
+                {this.renderFooter()}
+                <SoundContainer />
+                <IpcContainer />
+              </div>
+            </ErrorBoundary>
+            <ShortcutsContainer />
+            <ToastContainer />
+          </React.Fragment>
+        );
+    }
   }
 }
 
